@@ -6,7 +6,7 @@ export const emailVerificationCodeTable = pgTable("email_verification_code", {
   code: text("code").notNull(),
   user_id: text("user_id")
     .notNull()
-    .references(() => userTable.id),
+    .references(() => userTable.id,{ onDelete: "cascade" }),
   email: text("email").notNull(),
   expires_at: timestamp("expires_at", { mode: "date" }).notNull(),
 });

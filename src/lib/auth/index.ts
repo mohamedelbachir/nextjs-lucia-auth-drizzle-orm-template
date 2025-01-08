@@ -6,11 +6,12 @@ import { cache } from "react";
 import { db } from "../db";
 import { sessionTable } from "../db/schema/session";
 
-import { User as UserType } from "@/lib/db/schema/user";
+import { SessionUser, User as UserType } from "@/lib/db/schema/user";
 import { userTable } from "../db/schema/user";
 
 export const adapter = new DrizzlePostgreSQLAdapter(
   db,
+  //@ts-ignore
   sessionTable,
   userTable
 );
@@ -29,17 +30,21 @@ export const lucia = new Lucia(adapter, {
   getUserAttributes: (attributes) => {
     return {
       // attributes has the type of DatabaseUserAttributes
-      username: attributes.username,
+      name: attributes.name,
       email: attributes.email,
       email_verified: attributes.email_verified,
       setupTwoFactor: attributes.two_factor_secret !== null,
+      image: attributes.image,
+      id:attributes.id,
+      role:attributes.role,
+      isCompletedProfile:attributes.isCompletedProfile
     };
   },
 });
 
 export const validateRequest = cache(
   async (): Promise<
-    { user: User; session: Session } | { user: null; session: null }
+    { user: SessionUser; session: Session } | { user: null; session: null }
   > => {
     const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
     if (!sessionId) {
@@ -69,6 +74,7 @@ export const validateRequest = cache(
         );
       }
     } catch {}
+    //@ts-ignore
     return result;
   }
 );

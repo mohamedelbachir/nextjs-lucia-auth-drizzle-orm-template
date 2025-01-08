@@ -5,7 +5,7 @@ export const passwordResetTokenTable = pgTable("password_reset_token", {
   id: text("id").primaryKey(),
   user_id: text("user_id")
     .notNull()
-    .references(() => userTable.id),
+    .references(() => userTable.id,{ onDelete: "cascade" }),
   expires_at: timestamp("expires_at", { mode: "date" }).notNull(),
 });
 

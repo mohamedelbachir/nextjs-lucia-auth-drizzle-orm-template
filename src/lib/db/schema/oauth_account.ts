@@ -8,7 +8,7 @@ export const oauthAccountTable = pgTable(
     provider_user_id: text("provider_user_id").notNull(),
     user_id: text("user_id")
       .notNull()
-      .references(() => userTable.id),
+      .references(() => userTable.id,{ onDelete: "cascade" }),
   },
   (table) => {
     return {

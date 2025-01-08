@@ -11,7 +11,7 @@ export const userTable = mysqlTable("user", {
     .$defaultFn(() => createId()),
   email: varchar("email", { length: 255 }).unique(),
   username: varchar("username", { length: 255 }),
-  hashed_password: varchar("hashed_password", { length: 255 }),
+  password: varchar("password", { length: 255 }),
   email_verified: boolean("email_verified").notNull().default(false),
   two_factor_secret: varchar("two_factor_secret", { length: 255 }),
 });

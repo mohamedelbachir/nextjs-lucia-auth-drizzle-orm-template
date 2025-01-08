@@ -22,7 +22,8 @@ type Props = {};
 export const TwoFactorAuthForm = ({}: Props) => {
   const { user } = useCurrentUser();
   const [values, setValues] = useState(createOtpCode(user?.email!));
-  const [is2faEnabled, setIs2faEnabled] = useState(!!user?.setupTwoFactor);
+  //user?.setupTwoFactor||
+  const [is2faEnabled, setIs2faEnabled] = useState(false);
   const { secret, uri } = values;
 
   const methods = useForm<TwoFactorAuthValidator>({

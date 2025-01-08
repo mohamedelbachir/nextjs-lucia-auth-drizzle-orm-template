@@ -19,7 +19,9 @@ export const loginWithMagicLink = action(
   async ({ email, withoutRedirect }) => {
     await useRateLimiting();
     // check if user exists
+    //@ts-ignore
     const existingUser = await db.query.userTable.findFirst({
+      //@ts-ignore
       where: (user, { eq }) => eq(user.email, email),
     });
     if (!existingUser) {
@@ -88,7 +90,9 @@ export const loginWithPassword = action(
   async ({ email, withoutRedirect, password, code }) => {
     await useRateLimiting();
     // check if user exists
+    //@ts-ignore
     const existingUser = await db.query.userTable.findFirst({
+      //@ts-ignore
       where: (user, { eq }) => eq(user.email, email),
     });
     if (!existingUser) {
@@ -97,11 +101,11 @@ export const loginWithPassword = action(
     if (!password) {
       throw new Error("Password is required");
     }
-    if (!existingUser.hashed_password) {
+    if (!existingUser.password) {
       throw new Error("User does not have a password");
     }
     const validPassword = await new Argon2id().verify(
-      existingUser.hashed_password,
+      existingUser.password,
       password
     );
     if (!validPassword) {

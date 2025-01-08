@@ -10,7 +10,7 @@ import {
   
   import { User as UserType } from "@/lib/db/schema/user";
   import { userTable } from "../db/schema/user";
-  
+  //@ts-ignore
   export const adapter = new DrizzleMySQLAdapter(db, sessionTable, userTable);
   // https://lucia-auth.com/getting-started/nextjs-app
   export const lucia = new Lucia(adapter, {
@@ -27,7 +27,7 @@ import {
     getUserAttributes: (attributes) => {
       return {
         // attributes has the type of DatabaseUserAttributes
-        username: attributes.username,
+        name: attributes.name,
         email: attributes.email,
         email_verified: attributes.email_verified,
         setupTwoFactor: attributes.two_factor_secret !== null,

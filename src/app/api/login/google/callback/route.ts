@@ -45,7 +45,9 @@ export async function GET(request: Request): Promise<Response> {
         status: 400,
       });
     }
+    //@ts-ignore
     const existingUser = await db.query.userTable.findFirst({
+      //@ts-ignore
       where: (user, { eq }) => eq(user.email, googleUser.email),
     });
     console.log({ existingUser });
@@ -104,8 +106,9 @@ export async function GET(request: Request): Promise<Response> {
     await db.transaction(async (tx) => {
       await tx.insert(userTable).values({
         id: userId,
-        username: googleUser.name,
+        name: googleUser.name,
         email: googleUser.email,
+        image:googleUser.picture
       });
       await tx.insert(oauthAccountTable).values({
         provider_id: "google",

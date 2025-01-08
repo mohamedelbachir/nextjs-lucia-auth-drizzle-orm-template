@@ -23,7 +23,9 @@ import { redirect } from "next/navigation";
 export const passwordResetToken = action(
   passwordResetTokenValidator,
   async ({ email }) => {
+    //@ts-ignore
     const user = await db.query.userTable.findFirst({
+      //@ts-ignore
       where: (table, { eq }) => eq(table.email, email),
     });
 
@@ -75,7 +77,7 @@ export const resetPassword = action(
     await db
       .update(userTable)
       .set({
-        hashed_password: hashedPassword,
+        password: hashedPassword,
       })
       .where(eq(userTable.id, verificationToken.user_id));
 

@@ -22,7 +22,7 @@ import { useSession } from "./auth/SessionProvider";
 
 export default function Navbar(props: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const { session } = useSession();
+  const { session,user } = useSession();
 
   return (
     <NavbarUi
@@ -53,7 +53,7 @@ export default function Navbar(props: NavbarProps) {
       {/* Right Content */}
       <NavbarContent className="hidden md:flex" justify="end">
         {session ? (
-          <NavbarItem className="ml-2 !flex gap-2">
+          <><NavbarItem className="ml-2 !flex gap-2">
             <Button
               as={Link}
               href={`/protected`}
@@ -64,6 +64,8 @@ export default function Navbar(props: NavbarProps) {
               Dashboard
             </Button>
           </NavbarItem>
+          <img src={user.image??""}/>
+          </>
         ) : (
           <NavbarItem className="ml-2 !flex gap-2">
             <Button

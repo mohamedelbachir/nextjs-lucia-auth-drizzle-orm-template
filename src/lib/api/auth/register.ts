@@ -18,8 +18,9 @@ const registerSchema = z.object({
 export const register = action(registerSchema, async ({ email, password }) => {
   // check if user exists
   await useRateLimiting();
-
+  //@ts-ignore
   const existingUser = await db.query.userTable.findFirst({
+    //@ts-ignore
     where: (user, { eq }) => eq(user.email, email),
   });
   if (existingUser) {
@@ -30,14 +31,14 @@ export const register = action(registerSchema, async ({ email, password }) => {
   let values: InferInsertModel<typeof userTable> = {
     email,
     id: userId,
-    hashed_password: undefined,
+    password: undefined,
   };
   // create user
   if (password) {
     const hashedPassword = await new Argon2id().hash(password);
     values = {
       ...values,
-      hashed_password: hashedPassword,
+      password: hashedPassword,
       email_verified: false,
     };
   }

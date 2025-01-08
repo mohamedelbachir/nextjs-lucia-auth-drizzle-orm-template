@@ -9,14 +9,17 @@ export default async function Page({
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const { user } = await validateRequest();
+  const { user,session } = await validateRequest();
+
   if (!user) {
     return null;
   }
   return (
     <div className="flex justify-center items-center gap-4 flex-col h-dvh">
-      <h1>Hi, {user.email}!</h1>
-      <TwoFactorAuthForm />
+      <h1>Hi, {JSON.stringify(user)}!</h1>
+      <h1>Hi, {JSON.stringify(session)}!</h1>
+
+      {/* <TwoFactorAuthForm /> */}
       <LogoutButton />
     </div>
   );

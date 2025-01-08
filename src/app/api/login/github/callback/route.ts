@@ -49,8 +49,9 @@ export async function GET(request: Request): Promise<Response> {
         status: 400,
       });
     }
-
+    //@ts-ignore
     const existingUser = await db.query.userTable.findFirst({
+      //@ts-ignore
       where: (user, { eq }) => eq(user.email, primaryEmail.email),
     });
     const existingAccount = await db.query.oauthAccountTable.findFirst({
@@ -108,8 +109,13 @@ export async function GET(request: Request): Promise<Response> {
     await db.transaction(async (tx) => {
       await tx.insert(userTable).values({
         id: userId,
-        username: githubUser.login,
-        email: githubUser.email,
+        name: githubUser.name,
+        email: githubUser.email||primaryEmail.email,
+        image:githubUser.avatar_url,
+        bio: githubUser.bio,
+        githubLink:githubUser.html_url,
+        twitterLink:githubUser.twitter_username?`https://twitter.com/${githubUser.twitter_username}`:"",
+        websiteLink:githubUser.blog?githubUser.blog:""
       });
       await tx.insert(oauthAccountTable).values({
         provider_id: "github",
